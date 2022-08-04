@@ -1,0 +1,19 @@
+GET patent_publications/_search
+{
+  "size": 0, 
+  "query": {
+    "terms": {
+      "abstract_localized.text": [
+        "covid"
+      ]
+    }
+  }, 
+  "aggs": {
+    "top_keywords": {
+      "significant_text": {
+        "size": 20, 
+        "field": "abstract_localized.text"
+      }
+    }
+  }
+}
