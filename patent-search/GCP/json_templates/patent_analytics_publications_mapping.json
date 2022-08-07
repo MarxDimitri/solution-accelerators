@@ -1,268 +1,311 @@
 {
-  "properties": {
-    "abstract_localized": {
-      "properties": {
-        "language": {
-          "type": "keyword"
-        },
-        "text": {
-          "type": "text"
+  "settings": {
+    "analysis": {
+      "filter": {
+        "remove-dash-filter": {
+          "type": "pattern_replace",
+          "pattern": "[^a-zA-Z0-9]",
+          "replacement": ""
+        }
+      },
+      "analyzer": {
+        "remove-dash": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": [
+            "remove-dash-filter"
+          ]
         }
       }
-    },
-    "application_kind": {
-      "type": "keyword"
-    },
-    "application_number": {
-      "type": "keyword"
-    },
-    "application_number_formatted": {
-      "type": "keyword"
-    },
-    "art_unit": {
-      "type": "keyword"
-    },
-    "assignee": {
-      "type": "keyword"
-    },
-    "assignee_harmonized": {
-      "properties": {
-        "country_code": {
-          "type": "keyword"
-        },
-        "name": {
-          "type": "keyword"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "abstract_localized": {
+        "properties": {
+          "language": {
+            "type": "keyword"
+          },
+          "text": {
+            "type": "text"
+          }
         }
-      }
-    },
-    "citation": {
-      "properties": {
-        "application_number": {
-          "type": "keyword"
-        },
-        "category": {
-          "type": "keyword"
-        },
-        "filing_date": {
-          "type": "date",
-          "format": "yyyyMMdd",
-          "ignore_malformed": true
-        },
-        "npl_text": {
-          "type": "text"
-        },
-        "publication_number": {
-          "type": "keyword"
-        },
-        "type": {
-          "type": "keyword"
+      },
+      "application_kind": {
+        "type": "keyword"
+      },
+      "application_number": {
+        "type": "keyword"
+      },
+      "application_number_formatted": {
+        "type": "keyword"
+      },
+      "art_unit": {
+        "type": "keyword"
+      },
+      "assignee": {
+        "type": "keyword"
+      },
+      "assignee_harmonized": {
+        "properties": {
+          "country_code": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          }
         }
-      }
-    },
-    "claims_localized": {
-      "properties": {
-        "language": {
-          "type": "keyword"
-        },
-        "text": {
-          "type": "text"
+      },
+      "citation": {
+        "properties": {
+          "application_number": {
+            "type": "keyword"
+          },
+          "category": {
+            "type": "keyword"
+          },
+          "filing_date": {
+            "type": "date",
+            "format": "yyyyMMdd",
+            "ignore_malformed": true
+          },
+          "npl_text": {
+            "type": "text"
+          },
+          "publication_number": {
+            "type": "text",
+            "analyzer": "remove-dash",
+            "search_analyzer": "remove-dash",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "keyword"
+          }
         }
-      }
-    },
-    "country_code": {
-      "type": "keyword"
-    },
-    "cpc": {
-      "properties": {
-        "code": {
-          "type": "keyword"
-        },
-        "first": {
-          "type": "boolean"
-        },
-        "inventive": {
-          "type": "boolean"
+      },
+      "claims_localized": {
+        "properties": {
+          "language": {
+            "type": "keyword"
+          },
+          "text": {
+            "type": "text"
+          }
         }
-      }
-    },
-    "description_localized": {
-      "properties": {
-        "language": {
-          "type": "text"
-        },
-        "text": {
-          "type": "text"
+      },
+      "country_code": {
+        "type": "keyword"
+      },
+      "cpc": {
+        "properties": {
+          "code": {
+            "type": "keyword"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "inventive": {
+            "type": "boolean"
+          }
         }
-      }
-    },
-    "entity_status": {
-      "type": "keyword"
-    },
-    "examiner": {
-      "properties": {
-        "department": {
-          "type": "text"
-        },
-        "level": {
-          "type": "keyword"
-        },
-        "name": {
-          "type": "keyword"
+      },
+      "description_localized": {
+        "properties": {
+          "language": {
+            "type": "text"
+          },
+          "text": {
+            "type": "text"
+          }
         }
-      }
-    },
-    "family_id": {
-      "type": "keyword"
-    },
-    "fi": {
-      "properties": {
-        "code": {
-          "type": "keyword"
-        },
-        "first": {
-          "type": "boolean"
-        },
-        "inventive": {
-          "type": "boolean"
+      },
+      "entity_status": {
+        "type": "keyword"
+      },
+      "examiner": {
+        "properties": {
+          "department": {
+            "type": "text"
+          },
+          "level": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          }
         }
-      }
-    },
-    "filing_date": {
-      "type": "date",
-      "format": "yyyyMMdd",
-      "ignore_malformed": true
-    },
-    "fterm": {
-      "properties": {
-        "code": {
-          "type": "keyword"
-        },
-        "first": {
-          "type": "boolean"
-        },
-        "inventive": {
-          "type": "boolean"
+      },
+      "family_id": {
+        "type": "keyword"
+      },
+      "fi": {
+        "properties": {
+          "code": {
+            "type": "keyword"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "inventive": {
+            "type": "boolean"
+          }
         }
-      }
-    },
-    "grant_date": {
-      "type": "date",
-      "format": "yyyyMMdd",
-      "ignore_malformed": true
-    },
-    "inventor": {
-      "type": "text",
-      "fields": {
-        "keyword": {
-          "type": "keyword",
-          "ignore_above": 256
+      },
+      "filing_date": {
+        "type": "date",
+        "format": "yyyyMMdd",
+        "ignore_malformed": true
+      },
+      "fterm": {
+        "properties": {
+          "code": {
+            "type": "keyword"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "inventive": {
+            "type": "boolean"
+          }
         }
-      }
-    },
-    "inventor_harmonized": {
-      "properties": {
-        "country_code": {
-          "type": "keyword"
-        },
-        "name": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
+      },
+      "grant_date": {
+        "type": "date",
+        "format": "yyyyMMdd",
+        "ignore_malformed": true
+      },
+      "inventor": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "inventor_harmonized": {
+        "properties": {
+          "country_code": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
             }
           }
         }
-      }
-    },
-    "ipc": {
-      "properties": {
-        "code": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
+      },
+      "ipc": {
+        "properties": {
+          "code": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
             }
-          }
-        },
-        "first": {
-          "type": "boolean"
-        },
-        "inventive": {
-          "type": "boolean"
-        }
-      }
-    },
-    "kind_code": {
-      "type": "keyword"
-    },
-    "pct_number": {
-      "type": "keyword"
-    },
-    "priority_claim": {
-      "properties": {
-        "application_number": {
-          "type": "keyword"
-        },
-        "category": {
-          "type": "keyword"
-        },
-        "filing_date": {
-          "type": "date",
-          "format": "yyyyMMdd",
-          "ignore_malformed": true
-        },
-        "npl_text": {
-          "type": "text"
-        },
-        "publication_number": {
-          "type": "keyword"
-        },
-        "type": {
-          "type": "keyword"
-        }
-      }
-    },
-    "priority_date": {
-      "type": "date",
-      "format": "yyyyMMdd",
-      "ignore_malformed": true
-    },
-    "publication_date": {
-      "type": "date",
-      "format": "yyyyMMdd",
-      "ignore_malformed": true
-    },
-    "publication_number": {
-      "type": "keyword"
-    },
-    "title_localized": {
-      "properties": {
-        "language": {
-          "type": "keyword"
-        },
-        "text": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "inventive": {
+            "type": "boolean"
           }
         }
-      }
-    },
-    "uspc": {
-      "properties": {
-        "code": {
-          "type": "keyword"
-        },
-        "first": {
-          "type": "boolean"
-        },
-        "inventive": {
-          "type": "boolean"
+      },
+      "kind_code": {
+        "type": "keyword"
+      },
+      "pct_number": {
+        "type": "keyword"
+      },
+      "priority_claim": {
+        "properties": {
+          "application_number": {
+            "type": "keyword"
+          },
+          "category": {
+            "type": "keyword"
+          },
+          "filing_date": {
+            "type": "date",
+            "format": "yyyyMMdd",
+            "ignore_malformed": true
+          },
+          "npl_text": {
+            "type": "text"
+          },
+          "publication_number": {
+            "type": "text",
+            "analyzer": "remove-dash",
+            "search_analyzer": "remove-dash",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "keyword"
+          }
+        }
+      },
+      "priority_date": {
+        "type": "date",
+        "format": "yyyyMMdd",
+        "ignore_malformed": true
+      },
+      "publication_date": {
+        "type": "date",
+        "format": "yyyyMMdd",
+        "ignore_malformed": true
+      },
+      "publication_number": {
+        "type": "text",
+        "analyzer": "remove-dash",
+        "search_analyzer": "remove-dash",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "title_localized": {
+        "properties": {
+          "language": {
+            "type": "keyword"
+          },
+          "text": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "uspc": {
+        "properties": {
+          "code": {
+            "type": "keyword"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "inventive": {
+            "type": "boolean"
+          }
         }
       }
     }
