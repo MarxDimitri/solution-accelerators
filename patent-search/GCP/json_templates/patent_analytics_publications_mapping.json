@@ -2,18 +2,18 @@
   "settings": {
     "analysis": {
       "filter": {
-        "remove-dash-filter": {
+        "remove-hyphen-filter": {
           "type": "pattern_replace",
           "pattern": "[^a-zA-Z0-9]",
           "replacement": ""
         }
       },
       "analyzer": {
-        "remove-dash": {
+        "remove-hyphen-analyzer": {
           "type": "custom",
           "tokenizer": "keyword",
           "filter": [
-            "remove-dash-filter"
+            "remove-hyphen-filter"
           ]
         }
       }
@@ -74,8 +74,8 @@
           },
           "publication_number": {
             "type": "text",
-            "analyzer": "remove-dash",
-            "search_analyzer": "remove-dash",
+            "analyzer": "remove-hyphen-analyzer",
+            "search_analyzer": "remove-hyphen-analyzer",
             "fields": {
               "keyword": {
                 "type": "keyword"
@@ -246,8 +246,8 @@
           },
           "publication_number": {
             "type": "text",
-            "analyzer": "remove-dash",
-            "search_analyzer": "remove-dash",
+            "analyzer": "remove-hyphen-analyzer",
+            "search_analyzer": "remove-hyphen-analyzer",
             "fields": {
               "keyword": {
                 "type": "keyword"
@@ -271,8 +271,8 @@
       },
       "publication_number": {
         "type": "text",
-        "analyzer": "remove-dash",
-        "search_analyzer": "remove-dash",
+        "analyzer": "remove-hyphen-analyzer",
+        "search_analyzer": "remove-hyphen-analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"

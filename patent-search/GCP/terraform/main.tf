@@ -66,6 +66,7 @@ variable "google_cloud_container_spec_gcs_path"  {
 
 variable "google_cloud_inputTableSpec"  {
   type = string
+  default = "patents-public-data:patents.publications"
 }
 
 variable "google_cloud_maxNumWorkers"  {
@@ -112,10 +113,10 @@ data "external" "create_index" {
     elastic_endpoint    = ec_deployment.elastic_deployment.elasticsearch[0].https_endpoint
     elastic_username    = ec_deployment.elastic_deployment.elasticsearch_username
     elastic_password    = ec_deployment.elastic_deployment.elasticsearch_password
-    elastic_json_body   = templatefile("../json_templates/patent_analytics_publications_mapping.json", {})
+    elastic_json_body   = file("../json_templates/patent_analytics_publications_mapping.json")
     elastic_index_name  = var.elastic_index_name
   }
-  program = ["sh", "../scripts/es_create_mapping.sh" ]
+  program = ["sh", "../scripts/es_create_mapping.sh"]
   depends_on = [ec_deployment.elastic_deployment]
 }
 
