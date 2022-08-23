@@ -74,6 +74,14 @@ variable "google_cloud_maxNumWorkers"  {
   default = 1
 }
 
+variable "google_cloud_maxRetryAttempts" {
+  type = string
+}
+
+variable "google_cloud_maxRetryDuration" {
+  type = string
+}
+
 # -------------------------------------------------------------
 #  Deploy Elastic Cloud
 # -------------------------------------------------------------
@@ -158,6 +166,8 @@ resource "google_dataflow_flex_template_job" "read_from_bigquery_to_elasticserac
     index                 = var.elastic_index_name
     inputTableSpec        = var.google_cloud_inputTableSpec
     maxNumWorkers         = var.google_cloud_maxNumWorkers
+    maxRetryAttempts      = var.google_cloud_maxRetryAttempts
+    maxRetryDuration      = var.google_cloud_maxRetryDuration
   }
   depends_on = [data.external.elastic_generate_api_key]
 }
