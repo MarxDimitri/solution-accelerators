@@ -27,7 +27,13 @@
             "type": "keyword"
           },
           "text": {
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           }
         }
       },
@@ -44,7 +50,12 @@
         "type": "keyword"
       },
       "assignee": {
-        "type": "keyword"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
       },
       "assignee_harmonized": {
         "properties": {
@@ -52,7 +63,12 @@
             "type": "keyword"
           },
           "name": {
-            "type": "keyword"
+            "type": "text",
+            "fields": {
+              "keyword":{ 
+                "type": "keyword"
+              }
+            }
           }
         }
       },
@@ -119,7 +135,13 @@
             "type": "text"
           },
           "text": {
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "keyword":{
+                "type": "keyword",
+                "ignore_above" : 256
+              }
+            }
           }
         }
       },
@@ -129,7 +151,7 @@
       "examiner": {
         "properties": {
           "department": {
-            "type": "text"
+            "type": "keyword"
           },
           "level": {
             "type": "keyword"
@@ -182,8 +204,7 @@
         "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "type": "keyword"
           }
         }
       },
@@ -193,13 +214,7 @@
             "type": "keyword"
           },
           "name": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "text"
           }
         }
       },
@@ -209,8 +224,7 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
               }
             }
           },
