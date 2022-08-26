@@ -35,7 +35,7 @@ variable "elastic_deployment_name" {
 
 variable "elastic_index_name" {
   type = string
-  default = "patent_publications"
+  default = "patent-publications-000001"
 }
 
 variable "elastic_deployment_template_id" {
@@ -115,6 +115,23 @@ output "elastic_index_name" {
   value = var.elastic_index_name
 }
 
+data "external" "create_ilm_policy" {
+  query = {
+    elastic_http_method = "PUT"
+    elastic_endpoint    = ec_deployment.elastic_deployment.elasticsearch[0].https_endpoint
+    elastic_username    = ec_deployment.elastic_deployment.elasticsearch_username
+    elastic_password    = ec_deployment.elastic_deployment.elasticsearch_password
+    elastic_json_body   = file("../json_templates/es_ilm_policy.json")
+  }
+  program = ["sh", "../scripts/es_create_ilm_policy.sh"]
+  depends_on = [ec_deployment.elastic_deployment]
+}
+
+output "create_ilm_policy" {
+  value = data.external.create_ilm_policy.result.acknowledged
+  depends_on = [data.external.create_index]
+}
+
 data "external" "create_index" {
   query = {
     elastic_http_method = "PUT"
@@ -132,8 +149,6 @@ output "create_index_response" {
   value = data.external.create_index.result.acknowledged
   depends_on = [data.external.create_index]
 }
-
-
 
 data "external" "elastic_generate_api_key" {
   query = {
