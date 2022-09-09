@@ -43,6 +43,11 @@ variable "elastic_deployment_template_id" {
   default = "gcp-io-optimized"
 }
 
+variable "elastic_index_template_name" {
+  type = string
+  default = "patent-publications-template"
+}
+
 # -------------------------------------------------------------
 # BigQuery configuration
 # -------------------------------------------------------------
@@ -129,25 +134,25 @@ data "external" "create_ilm_policy" {
 
 output "create_ilm_policy" {
   value = data.external.create_ilm_policy.result.acknowledged
-  depends_on = [data.external.create_index]
+  depends_on = [data.external.create_ilm_policy]
 }
 
-data "external" "create_index" {
+data "external" "create_index_template" {
   query = {
     elastic_http_method = "PUT"
     elastic_endpoint    = ec_deployment.elastic_deployment.elasticsearch[0].https_endpoint
     elastic_username    = ec_deployment.elastic_deployment.elasticsearch_username
     elastic_password    = ec_deployment.elastic_deployment.elasticsearch_password
-    elastic_json_body   = file("../json_templates/patent_analytics_publications_mapping.json")
-    elastic_index_name  = var.elastic_index_name
+    elastic_json_body   = file("../json_templates/patent_analytics_publications_index_template.json")
+    elastic_index_template_name  = var.elastic_index_template_name
   }
-  program = ["sh", "../scripts/es_create_mapping.sh"]
+  program = ["sh", "../scripts/es_create_index_template.sh"]
   depends_on = [ec_deployment.elastic_deployment]
 }
 
-output "create_index_response" {
-  value = data.external.create_index.result.acknowledged
-  depends_on = [data.external.create_index]
+output "create_index_template_response" {
+  value = data.external.create_index_template.result.acknowledged
+  depends_on = [data.external.create_index_template]
 }
 
 data "external" "elastic_generate_api_key" {
@@ -161,6 +166,7 @@ data "external" "elastic_generate_api_key" {
   depends_on = [ec_deployment.elastic_deployment]
 }
 
+//We need the API Key first in order to setup the Dataflow job 
 output "elastic_api_key" {
   value = data.external.elastic_generate_api_key.result.encoded
   depends_on = [data.external.elastic_generate_api_key]
