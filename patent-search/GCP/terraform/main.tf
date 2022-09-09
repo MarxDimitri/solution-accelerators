@@ -20,7 +20,7 @@ provider "ec" {
 # -------------------------------------------------------------
 variable "elastic_version" {
   type = string
-  default = "8.3.2"
+  default = "8.4.1"
 }
 
 variable "elastic_region" {
@@ -40,7 +40,7 @@ variable "elastic_index_name" {
 
 variable "elastic_deployment_template_id" {
   type = string
-  default = "gcp-io-optimized"
+  default = "gcp-io-optimized-v2"
 }
 
 variable "elastic_index_template_name" {
@@ -76,15 +76,17 @@ variable "google_cloud_inputTableSpec"  {
 
 variable "google_cloud_maxNumWorkers"  {
   type = number
-  default = 1
+  default = 5
 }
 
 variable "google_cloud_maxRetryAttempts" {
   type = string
+  default = 1
 }
 
 variable "google_cloud_maxRetryDuration" {
   type = string
+  default = 30
 }
 
 # -------------------------------------------------------------
@@ -95,8 +97,17 @@ resource "ec_deployment" "elastic_deployment" {
   region                  = var.elastic_region
   version                 = var.elastic_version
   deployment_template_id  = var.elastic_deployment_template_id
-  elasticsearch {}
+  elasticsearch {
+	autoscale = "true"
+	
+	topology {
+      id   = "hot_content"
+      size = "16g"
+	  zone_count = 3
+	}
+  }
   kibana {}
+  integrations_server {}
 }
 
 output "elastic_endpoint" {
@@ -170,6 +181,23 @@ data "external" "elastic_generate_api_key" {
 output "elastic_api_key" {
   value = data.external.elastic_generate_api_key.result.encoded
   depends_on = [data.external.elastic_generate_api_key]
+}
+
+data "external" "elastic_upload_saved_objects" {
+  query = {
+	elastic_http_method = "POST"
+    kibana_endpoint  = ec_deployment.elastic_deployment.kibana[0].https_endpoint
+    elastic_username  = ec_deployment.elastic_deployment.elasticsearch_username
+    elastic_password  = ec_deployment.elastic_deployment.elasticsearch_password
+    so_file      		= "../example_dashboards/patent_search_dashboard_overview.ndjson"
+  }
+  program = ["sh", "../scripts/kb_upload_saved_objects.sh" ]
+  depends_on = [ec_deployment.elastic_deployment]
+}
+
+output "elastic_upload_saved_objects" {
+  value = data.external.elastic_upload_saved_objects.result
+  depends_on = [data.external.elastic_upload_saved_objects]
 }
 
 # -------------------------------------------------------------
