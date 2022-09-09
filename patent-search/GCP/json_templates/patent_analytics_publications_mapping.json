@@ -1,9 +1,9 @@
 {
   "settings": {
     "index": {
-      "refresh_interval": "5s",
+      "refresh_interval": "10s",
       "number_of_replicas": 1,
-      "number_of_shards": 5,
+      "number_of_shards": 40,
       "lifecycle.name": "patent_search_rollover_policy",
       "lifecycle.rollover_alias": "patent_search_alias"
     },
